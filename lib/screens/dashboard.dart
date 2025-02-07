@@ -1,8 +1,6 @@
 import 'package:fina_year_pr/screens/contact.dart';
 import 'package:fina_year_pr/screens/logout.dart';
-import 'package:fina_year_pr/screens/registerfounditems.dart';
 import 'package:flutter/material.dart';
-import 'package:fina_year_pr/screens/itemtracking.dart';
 import 'package:fina_year_pr/screens/notification.dart';
 import 'package:fina_year_pr/screens/registerlostitems.dart';
 import 'package:fina_year_pr/screens/userprofile.dart';
@@ -92,14 +90,6 @@ class DashboardScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => const ViewFoundItemsScreen())),
-          ),
-          _buildDrawerItem(
-            icon: Icons.find_in_page,
-            title: 'Register found Item',
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const RegisterFoundItemsScreen())),
           ),
           _buildDrawerItem(
             icon: Icons.add_circle_outline,

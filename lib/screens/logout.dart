@@ -63,8 +63,8 @@ class LogoutScreen extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey,
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 15),
                     ),
                     child: const Text(
                       'Cancel',
@@ -74,13 +74,14 @@ class LogoutScreen extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => const Signin()),
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 76, 0, 255),
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 15),
                     ),
                     child: const Text(
                       'Logout',

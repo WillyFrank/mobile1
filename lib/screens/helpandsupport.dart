@@ -30,7 +30,7 @@ class HelpSupportScreen extends StatelessWidget {
     ),
   ];
 
-  const HelpSupportScreen({super.key});
+  HelpSupportScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ class HelpSupportScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 12),
             ),
             onPressed: () {
-              // TODO: Implement contact support functionality
+              //  Implement contact support functionality
             },
           ),
           const SizedBox(height: 16),
@@ -82,7 +82,7 @@ class HelpSupportScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 12),
             ),
             onPressed: () {
-              // TODO: Implement live chat functionality
+              //  Implement live chat functionality
             },
           ),
         ],

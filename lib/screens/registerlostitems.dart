@@ -1,5 +1,8 @@
+// Flutter: Updated RegisterLostItemScreen
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class RegisterLostItemScreen extends StatefulWidget {
   const RegisterLostItemScreen({super.key});
@@ -13,23 +16,58 @@ class _RegisterLostItemScreenState extends State<RegisterLostItemScreen> {
   DateTime? _dateLost;
   final TextEditingController _ticketIdController = TextEditingController();
   final TextEditingController _seatNumberController = TextEditingController();
+  final TextEditingController _preferredNameController =
+      TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
 
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(message)));
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate() && _dateLost != null) {
       final ticketId = _ticketIdController.text.trim();
       final seatNumber = _seatNumberController.text.trim();
+      final preferredName = _preferredNameController.text.trim();
+      final category = _categoryController.text.trim();
+      final dateLost = _dateLost!.toIso8601String();
+      const String apiUrl = "http://192.168.1.10:8080/lostItems";
 
-      debugPrint('Ticket ID: $ticketId');
-      debugPrint('Seat Number: $seatNumber');
-      debugPrint('Date Lost: ${DateFormat('dd/MM/yyyy').format(_dateLost!)}');
+      final Map<String, dynamic> requestBody = {
+        "ticket_id": ticketId,
+        "seatNumber": seatNumber,
+        "preferredName": preferredName,
+        "category": category,
+        "dateLost": dateLost,
+        "status": "Active"
+      };
 
-      _showSnackBar('Lost item registered successfully!');
-      Navigator.pop(context); // Navigate back after submission
+      try {
+        final response = await http.post(
+          Uri.parse(apiUrl),
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: jsonEncode(requestBody),
+        );
+
+        if (response.statusCode == 201) {
+          _showSnackBar('Lost item registered successfully!');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const RatingsAndFeedbackScreen()),
+          );
+        } else {
+          final responseBody = jsonDecode(response.body);
+          _showSnackBar(
+              'Failed to register item: ${responseBody['message'] ?? 'Unknown error'}');
+        }
+      } catch (e) {
+        _showSnackBar('Error: Could not connect to the server.');
+      }
     } else {
       _showSnackBar('Please fill all required fields');
     }
@@ -39,15 +77,15 @@ class _RegisterLostItemScreenState extends State<RegisterLostItemScreen> {
   void dispose() {
     _ticketIdController.dispose();
     _seatNumberController.dispose();
+    _preferredNameController.dispose();
+    _categoryController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Register Lost Item'),
-      ),
+      appBar: AppBar(title: const Text('Register Lost Item')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -55,37 +93,47 @@ class _RegisterLostItemScreenState extends State<RegisterLostItemScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Ticket ID Field
               TextFormField(
                 controller: _ticketIdController,
                 decoration: const InputDecoration(
-                  labelText: 'Ticket ID',
-                  border: OutlineInputBorder(),
-                ),
+                    labelText: 'Ticket ID', border: OutlineInputBorder()),
                 validator: (value) => value == null || value.isEmpty
                     ? 'Ticket ID is required'
                     : null,
               ),
               const SizedBox(height: 16),
-              // Seat Number Field
               TextFormField(
                 controller: _seatNumberController,
                 decoration: const InputDecoration(
-                  labelText: 'Seat Number',
-                  border: OutlineInputBorder(),
-                ),
+                    labelText: 'Seat Number', border: OutlineInputBorder()),
                 validator: (value) => value == null || value.isEmpty
                     ? 'Seat Number is required'
                     : null,
               ),
               const SizedBox(height: 16),
-              // Date Lost Picker
+              TextFormField(
+                controller: _preferredNameController,
+                decoration: const InputDecoration(
+                    labelText: 'Preferred Name', border: OutlineInputBorder()),
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Preferred Name is required'
+                    : null,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _categoryController,
+                decoration: const InputDecoration(
+                    labelText: 'Category', border: OutlineInputBorder()),
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Category is required'
+                    : null,
+              ),
+              const SizedBox(height: 16),
               TextFormField(
                 decoration: const InputDecoration(
-                  labelText: 'Date Lost',
-                  suffixIcon: Icon(Icons.calendar_today),
-                  border: OutlineInputBorder(),
-                ),
+                    labelText: 'Date Lost',
+                    suffixIcon: Icon(Icons.calendar_today),
+                    border: OutlineInputBorder()),
                 readOnly: true,
                 onTap: () async {
                   final pickedDate = await showDatePicker(
@@ -101,25 +149,33 @@ class _RegisterLostItemScreenState extends State<RegisterLostItemScreen> {
                   }
                 },
                 controller: TextEditingController(
-                  text: _dateLost != null
-                      ? DateFormat('dd/MM/yyyy').format(_dateLost!)
-                      : '',
-                ),
+                    text: _dateLost != null
+                        ? DateFormat('dd/MM/yyyy').format(_dateLost!)
+                        : ''),
                 validator: (value) =>
                     _dateLost == null ? 'Date is required' : null,
               ),
               const SizedBox(height: 24),
-              // Submit Button
               Center(
                 child: ElevatedButton(
-                  onPressed: _submitForm,
-                  child: const Text('Submit'),
-                ),
+                    onPressed: _submitForm, child: const Text('Submit')),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class RatingsAndFeedbackScreen extends StatelessWidget {
+  const RatingsAndFeedbackScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Ratings and Feedback')),
+      body: const Center(child: Text('Thank you for your feedback!')),
     );
   }
 }

@@ -18,7 +18,7 @@ class NotificationScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.home, color: Colors.white),
             onPressed: () {
-              // TODO: Implement home navigation
+              //: Implement home navigation
             },
           ),
         ],
@@ -34,21 +34,21 @@ class NotificationScreen extends StatelessWidget {
           ),
           _buildNotificationItem(
             image: 'assets/profile2.jpg',
-            name: 'Dennis Nedry',
+            name: 'Dennis Newry',
             message:
                 'A white iPhone 13 has been reported lost near the food court. If you have found this item, kindly report it using the Lost and Found system. Your honesty is greatly appreciated.',
             date: 'Last Wednesday at 9:42 AM',
           ),
           _buildNotificationItem(
             image: 'assets/profile3.jpg',
-            name: 'Dennis Nedry',
+            name: 'Dennis Nerdy',
             message:
                 'A set of car keys with a red keychain has been found in the parking lot area C. Please use the Lost and Found system with proper identification to retrieve your keys',
             date: 'Last Wednesday at 9:42 AM',
           ),
           _buildNotificationItem(
             image: 'assets/profile4.jpg',
-            name: 'Dennis Nedry',
+            name: 'Dennis Nebr',
             message:
                 'A blue Nike backpack containing school textbooks was left on Bus 42. If you have any information or have found this item, please use the Lost and Found system to report it immediately.',
             date: 'Last Wednesday at 9:42 AM',

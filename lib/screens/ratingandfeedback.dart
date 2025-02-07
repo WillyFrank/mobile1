@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -30,6 +32,49 @@ class FeedbackScreen extends StatefulWidget {
 class _FeedbackScreenState extends State<FeedbackScreen> {
   int _rating = 4;
   final TextEditingController _feedbackController = TextEditingController();
+  bool _isSubmitting = false;
+
+  Future<void> _submitFeedback() async {
+    setState(() {
+      _isSubmitting = true;
+    });
+
+    final feedback = {
+      'rating': _rating,
+      'feedback': _feedbackController.text,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse('http://192.168.1.3:8080:/api/feedback'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(feedback),
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Feedback submitted successfully!')),
+        );
+        _feedbackController.clear();
+        setState(() {
+          _rating = 4; // Reset rating
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text('Failed to submit feedback: ${response.body}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    } finally {
+      setState(() {
+        _isSubmitting = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +114,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                       ),
                       SizedBox(width: 10),
                       Text(
-                        'Your Claim Recieved!!',
+                        'Your Claim Received!',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -106,7 +151,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   TextField(
                     controller: _feedbackController,
                     decoration: const InputDecoration(
-                      hintText: 'My feedback!!',
+                      hintText: 'My feedback!',
                       border: OutlineInputBorder(),
                     ),
                     maxLines: 3,
@@ -121,10 +166,12 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      onPressed: () {
-                        // Handle submit feedback
-                      },
-                      child: const Text('Submit feedback'),
+                      onPressed: _isSubmitting ? null : _submitFeedback,
+                      child: _isSubmitting
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : const Text('Submit feedback'),
                     ),
                   ),
                 ],

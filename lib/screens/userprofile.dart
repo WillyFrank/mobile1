@@ -5,24 +5,6 @@ class UserProfileScreen extends StatelessWidget {
   final String username = 'John Doe';
   final String phoneNumber = '+1 (555) 123-4567';
 
-  final List<LostItem> lostItems = [
-    LostItem(
-      name: 'Blue Backpack',
-      date: '2024-08-15',
-      status: 'Pending',
-    ),
-    LostItem(
-      name: 'Smartphone',
-      date: '2024-08-10',
-      status: 'Found',
-    ),
-    LostItem(
-      name: 'Umbrella',
-      date: '2024-07-30',
-      status: 'Closed',
-    ),
-  ];
-
   const UserProfileScreen({super.key});
 
   @override
@@ -32,14 +14,11 @@ class UserProfileScreen extends StatelessWidget {
         title: Text('My Profile', style: GoogleFonts.poppins()),
         backgroundColor: Colors.blue[800],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildProfileHeader(),
-            _buildPersonalInfo(),
-            _buildLostItemsList(),
-          ],
-        ),
+      body: Column(
+        children: [
+          _buildProfileHeader(),
+          _buildPersonalInfo(),
+        ],
       ),
     );
   }
@@ -83,9 +62,9 @@ class UserProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
             ),
             onPressed: () {
-              // TODO: Implement edit profile functionality
+              // Implement update profile functionality
             },
-            child: const Text('Edit Profile'),
+            child: const Text('Update Profile'),
           ),
         ],
       ),

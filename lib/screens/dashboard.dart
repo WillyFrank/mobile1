@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fina_year_pr/screens/notification.dart';
 import 'package:fina_year_pr/screens/registerlostitems.dart';
 import 'package:fina_year_pr/screens/userprofile.dart';
-import 'package:fina_year_pr/screens/viewlostitems.dart';
+import 'package:fina_year_pr/screens/viewfounditems.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -102,20 +102,18 @@ class DashboardScreen extends StatelessWidget {
           _buildDrawerItem(
             icon: Icons.notifications,
             title: 'Notifications',
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const NotificationScreen())),
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NotificationScreen())),
           ),
           _buildDrawerItem(
             icon: Icons.person,
             title: 'Profile',
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const UserProfileScreen())),
-          ),
-          _buildDrawerItem(
-            icon: Icons.track_changes,
-            title: 'Item Tracking',
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const ItemTrackingScreen())),
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const UserProfileScreen())),
           ),
           const Divider(),
           _buildDrawerItem(

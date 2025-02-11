@@ -32,10 +32,10 @@ class _RegisterLostItemScreenState extends State<RegisterLostItemScreen> {
       final preferredName = _preferredNameController.text.trim();
       final category = _categoryController.text.trim();
       final dateLost = _dateLost!.toIso8601String();
-      const String apiUrl = "http://192.168.1.10:8080/lostItems";
+      const String apiUrl = "http://192.168.1.77:8080/claims";
 
       final Map<String, dynamic> requestBody = {
-        "ticket_id": ticketId,
+        "ticketId": ticketId,
         "seatNumber": seatNumber,
         "preferredName": preferredName,
         "category": category,

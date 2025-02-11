@@ -90,7 +90,7 @@ class ViewFoundItemsScreen extends StatelessWidget {
 
   Future<void> _submitClaim(
       BuildContext context, String itemTitle, String ticketId) async {
-    const apiUrl = 'http://192.168.1.10:8080/claims';
+    const apiUrl = 'http://192.168.1.77:8080/claims';
     final claimData = {
       'itemTitle': itemTitle,
       'ticketId': ticketId,
